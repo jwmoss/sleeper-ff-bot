@@ -247,7 +247,9 @@ def get_negative_starters(league_id):
                 std_pts = 0
             if std_pts < 0:
                 player_info = players_dict[starter_id]
-                player_name = "{} {}".format(player_info["first_name"], player_info["last_name"])
+                player_name = "{} {}".format(
+                    player_info["first_name"], player_info["last_name"]
+                )
                 negative_players.append((player_name, std_pts))
 
         if len(negative_players) > 0:
@@ -293,10 +295,15 @@ def get_welcome_string():
     :return: String welcome message
     """
     welcome_message = "👋 Hello, I am Sleeper Bot! \n\nThe bot schedule for the {} ff season can be found here: ".format(
-        STARTING_YEAR)
-    welcome_message += "https://github.com/SwapnikKatkoori/sleeper-ff-bot#current-schedule \n\n"
-    welcome_message += "Any feature requests, contributions, or issues for the bot can be added here: " \
-                       "https://github.com/SwapnikKatkoori/sleeper-ff-bot \n\n"
+        STARTING_YEAR
+    )
+    welcome_message += (
+        "https://github.com/SwapnikKatkoori/sleeper-ff-bot#current-schedule \n\n"
+    )
+    welcome_message += (
+        "Any feature requests, contributions, or issues for the bot can be added here: "
+        "https://github.com/SwapnikKatkoori/sleeper-ff-bot \n\n"
+    )
 
     return welcome_message
 
@@ -360,8 +367,9 @@ def get_scores_string(league_id):
             first_score = matchup[0][1]
         if matchup[1][1] is not None:
             second_score = matchup[1][1]
-        string_to_add = "Matchup {}\n{:<8} {:<8.2f}\n{:<8} {:<8.2f}\n\n".format(i + 1, matchup[0][0], first_score,
-                                                                                matchup[1][0], second_score)
+        string_to_add = "Matchup {}\n{:<8} {:<8.2f}\n{:<8} {:<8.2f}\n\n".format(
+            i + 1, matchup[0][0], first_score, matchup[1][0], second_score
+        )
         final_message_string += string_to_add
 
     return final_message_string
@@ -386,8 +394,9 @@ def get_close_games_string(league_id, close_num):
     for i, matchup_id in enumerate(close_games):
         matchup = close_games[matchup_id]
         print(matchup)
-        string_to_add = "Matchup {}\n{:<8} {:<8.2f}\n{:<8} {:<8.2f}\n\n".format(i + 1, matchup[0][0], matchup[0][1],
-                                                                                matchup[1][0], matchup[1][1])
+        string_to_add = "Matchup {}\n{:<8} {:<8.2f}\n{:<8} {:<8.2f}\n\n".format(
+            i + 1, matchup[0][0], matchup[0][1], matchup[1][0], matchup[1][1]
+        )
         final_message_string += string_to_add
     return final_message_string
 
@@ -403,7 +412,9 @@ def get_standings_string(league_id):
     users = league.get_users()
     standings = league.get_standings(rosters, users)
     final_message_string = "________________________________\n"
-    final_message_string += "Standings \n|{0:^7}|{1:^7}|{2:^7}|{3:^7}\n".format("rank", "team", "wins", "points")
+    final_message_string += "Standings \n|{0:^7}|{1:^7}|{2:^7}|{3:^7}\n".format(
+        "rank", "team", "wins", "points"
+    )
     final_message_string += "________________________________\n\n"
     try:
         playoff_line = os.environ["NUMBER_OF_PLAYOFF_TEAMS"] - 1
@@ -417,7 +428,9 @@ def get_standings_string(league_id):
             team_name = team[:7]
         else:
             team_name = team
-        string_to_add = "{0:^7} {1:^10} {2:>7} {3:>7}\n".format(i + 1, team_name, standing[1], standing[3])
+        string_to_add = "{0:^7} {1:^10} {2:>7} {3:>7}\n".format(
+            i + 1, team_name, standing[1], standing[3]
+        )
         if i == playoff_line:
             string_to_add += "________________________________\n\n"
         final_message_string += string_to_add
@@ -435,18 +448,26 @@ def get_best_and_worst_string(league_id):
     lowest_scorer = get_lowest_score(league_id)[1]
     lowest_score = get_lowest_score(league_id)[0]
     lowest_score_emojis = "😢😢"
-    final_string = "{} Highest Scorer:\n{}\n{:.2f}\n\n{} Lowest Scorer:\n {}\n{:.2f}\n\n".format(highest_score_emojis,
-                                                                                                 highest_scorer,
-                                                                                                 highest_score,
-                                                                                                 lowest_score_emojis,
-                                                                                                 lowest_scorer,
-                                                                                                 lowest_score)
+    final_string = (
+        "{} Highest Scorer:\n{}\n{:.2f}\n\n{} Lowest Scorer:\n {}\n{:.2f}\n\n".format(
+            highest_score_emojis,
+            highest_scorer,
+            highest_score,
+            lowest_score_emojis,
+            lowest_scorer,
+            lowest_score,
+        )
+    )
     highest_bench_score_emojis = " 😂😂"
     bench_points = get_bench_points(league_id)
     largest_scoring_bench = get_highest_bench_points(bench_points)
-    final_string += "{} Most points left on the bench:\n{}\n{:.2f} in standard\n\n".format(highest_bench_score_emojis,
-                                                                                           largest_scoring_bench[0],
-                                                                                           largest_scoring_bench[1])
+    final_string += (
+        "{} Most points left on the bench:\n{}\n{:.2f} in standard\n\n".format(
+            highest_bench_score_emojis,
+            largest_scoring_bench[0],
+            largest_scoring_bench[1],
+        )
+    )
     negative_starters = get_negative_starters(league_id)
     if negative_starters:
         final_string += "🤔🤔Why bother?\n"
@@ -455,7 +476,9 @@ def get_best_and_worst_string(league_id):
         negative_starters_list = negative_starters[key]
         final_string += "{} Started:\n".format(key)
         for negative_starter_tup in negative_starters_list:
-            final_string += "{} who had {} in standard\n".format(negative_starter_tup[0], negative_starter_tup[1])
+            final_string += "{} who had {} in standard\n".format(
+                negative_starter_tup[0], negative_starter_tup[1]
+            )
         final_string += "\n"
     return final_string
 
@@ -508,16 +531,24 @@ if __name__ == "__main__":
         bot = Discord(webhook)
 
     bot.send(get_welcome_string)  # inital message to send
-    schedule.every().thursday.at("19:00").do(bot.send, get_matchups_string,
-                                             league_id)  # Matchups Thursday at 4:00 pm ET
-    schedule.every().friday.at("12:00").do(bot.send, get_scores_string, league_id)  # Scores Friday at 12 pm ET
-    schedule.every().sunday.at("23:00").do(bot.send, get_close_games_string, league_id,
-                                           int(close_num))  # Close games Sunday on 7:00 pm ET
-    schedule.every().monday.at("12:00").do(bot.send, get_scores_string, league_id)  # Scores Monday at 12 pm ET
-    schedule.every().tuesday.at("15:00").do(bot.send, get_standings_string,
-                                            league_id)  # Standings Tuesday at 11:00 am ET
-    schedule.every().tuesday.at("15:01").do(bot.send, get_best_and_worst_string,
-                                            league_id)  # Standings Tuesday at 11:01 am ET
+    schedule.every().thursday.at("19:00").do(
+        bot.send, get_matchups_string, league_id
+    )  # Matchups Thursday at 4:00 pm ET
+    schedule.every().friday.at("12:00").do(
+        bot.send, get_scores_string, league_id
+    )  # Scores Friday at 12 pm ET
+    schedule.every().sunday.at("23:00").do(
+        bot.send, get_close_games_string, league_id, int(close_num)
+    )  # Close games Sunday on 7:00 pm ET
+    schedule.every().monday.at("12:00").do(
+        bot.send, get_scores_string, league_id
+    )  # Scores Monday at 12 pm ET
+    schedule.every().tuesday.at("15:00").do(
+        bot.send, get_standings_string, league_id
+    )  # Standings Tuesday at 11:00 am ET
+    schedule.every().tuesday.at("15:01").do(
+        bot.send, get_best_and_worst_string, league_id
+    )  # Standings Tuesday at 11:01 am ET
 
     while True:
         if starting_date <= pendulum.today():
